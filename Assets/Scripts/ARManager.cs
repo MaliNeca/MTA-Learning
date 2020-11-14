@@ -6,40 +6,36 @@ using Vuforia;
 
 public class ARManager : MonoBehaviour
 {
-
+    private void Awake()
+    {
+        //foreach (GameObject _go in GameObject.FindGameObjectsWithTag("MainCamera"))
+        //{
+        //    if (_go.transform.name != "ARCamera")
+        //    {
+        //        Destroy(_go);
+        //    }
+        //}
+    }
 
 
     void Start()
     {
-        
-
-        StartCoroutine(waitSeconds());
-
+        StartCoroutine(CamCheck());
     }
-    // Update is called once per frame
-    void Update()
-    {
-      
-
-    }
-
-    private IEnumerator waitSeconds()
+    public GameObject ArCam;
+    private IEnumerator CamCheck()
     {
         while (true)
         {
             yield return new WaitForSecondsRealtime(0.2f);
-
-            foreach (GameObject c in GameObject.FindGameObjectsWithTag("MainCamera"))
-            {
-                if (c.GetComponent<PhotonView>() != null)
-                {
-                    if (!c.GetComponent<PhotonView>().IsMine)
-                    {
-                        Destroy(c.gameObject);
-                    }
-                }
-            }
-
+            //foreach (GameObject _go in GameObject.FindGameObjectsWithTag("MainCamera"))
+            //{
+            //    if (_go.transform.name != "ARCamera")
+            //    {
+            //        Destroy(_go);
+            //    }
+            //}
+            ArCam.SetActive(true);
         }
     }
 }

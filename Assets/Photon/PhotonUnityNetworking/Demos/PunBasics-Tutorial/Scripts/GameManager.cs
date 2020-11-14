@@ -13,6 +13,7 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 using Vuforia;
+using System.Collections;
 
 namespace Photon.Pun.Demo.PunBasics
 {
@@ -53,18 +54,15 @@ namespace Photon.Pun.Demo.PunBasics
 		void Start()
 		{
 
-			foreach (GameObject c in GameObject.FindGameObjectsWithTag("MainCamera"))
-			{
-				if (c.GetComponent<PhotonView>() != null)
-				{
-					Destroy(c.gameObject);
-					
-				}
-			}
+            foreach (GameObject c in GameObject.FindGameObjectsWithTag("MainCamera"))
+            {
+				c.GetComponent<VuforiaRuntime>().Deinit();
+                Destroy(c.gameObject);
+            }
 
 
 
-			Instance = this;
+            Instance = this;
 
 			
 
@@ -85,9 +83,9 @@ namespace Photon.Pun.Demo.PunBasics
 				if (PlayerManager.LocalPlayerInstance==null)
 				{
 				    Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
-
+					StartCoroutine(PlayerInstanceDelay());
 					// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-					PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f,5f,0f), Quaternion.identity, 0);
+					
 				}else{
 
 					Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
@@ -96,6 +94,12 @@ namespace Photon.Pun.Demo.PunBasics
 
 			}
 
+		}
+
+		private IEnumerator PlayerInstanceDelay()
+        {
+			yield return new WaitForSeconds(2);
+			PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
 		}
 
 		/// <summary>

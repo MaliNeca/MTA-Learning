@@ -76,7 +76,7 @@ namespace Photon.Pun.Demo.PunBasics
 		{
 			
 			this.Connect();
-			
+			VuforiaRuntime.Instance.InitVuforia();
 
 		}
 
